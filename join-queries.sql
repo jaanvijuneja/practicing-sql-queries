@@ -22,4 +22,20 @@ inner join
 authors as a
 on b.author = a.author_name;
 
+# Determine how many books each author has written and include the author's name in the result.
+
+select b.author, count(b.title)
+from books as b
+inner join
+authors as a
+on b.author = a.author_name
+group by b.author;
+
+# List all authors, their book titles, and genres, even if they have not written any book.
+
+select a.author_name, b.title, b.genre
+from authors as a
+full join
+books as b
+on a.author_name = b.author;
 
