@@ -39,3 +39,20 @@ full join
 books as b
 on a.author_name = b.author;
 
+# For each genre, find the author who has written the most books and list the titles of those books.
+
+select a.author, a.genre
+FROM (select tablec.author, tablec.genre, tablec.noofbooks
+from (select genre, author, count(title) as noofbooks
+from books
+group by genre, author) tablec
+inner join
+(select genre, max(noofbooks) as maxbooks from 
+(select genre, author, count(title) as noofbooks
+from books
+group by genre, author) tablea
+group by genre) tableb
+on tableb.genre = tablec.genre and tableb.maxbooks = tablec.noofbooks) a;
+
+
+
