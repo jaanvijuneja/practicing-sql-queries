@@ -54,5 +54,45 @@ group by genre, author) tablea
 group by genre) tableb
 on tableb.genre = tablec.genre and tableb.maxbooks = tablec.noofbooks) a;
 
+# Find the nationality that represents the highest average book price, including at least 2 authors from that nationality in your result set.
 
+select tablea.nationality, count(tablea.author), max(tablea.avgprice) as maxt
+from
+(select a.nationality, b. author, avg(b.price) as avgprice
+from authors as a
+inner join 
+books as b
+on a.author_name = b.author
+group by a.nationality, b.author) tablea
+group by tablea.nationality
+having count(tablea.author) > 1;
 
+# Using a LEFT JOIN, identify authors who have no books in the books table and list their nationalities.
+
+select a.author_name, a.nationality
+from authors as a
+left join books as b
+on a.author_name = b.author
+where b.title is Null;
+
+# Show the average book price and total number of books for each author, but only for authors who have written books costing more than $15
+
+select author, count(title), avg(price)
+from books
+where price > 15
+group by author;
+
+# Find the book with the highest price for each author, including authors who have not written any books.
+
+select au.author_name, tablec.title, tablec.mp
+from
+authors as au
+left join
+(select a.author, a.title, tableb.maxprice as mp
+from books as a
+inner join
+(select author, max(price) as maxprice
+from books
+group by author) tableb
+on a.author = tableb.author and a.price = tableb.maxprice) tablec
+on au.author_name = tablec.author;
