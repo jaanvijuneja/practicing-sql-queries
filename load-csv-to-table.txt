@@ -1,0 +1,46 @@
+1) Create database
+2) Create empty table
+
+CREATE TABLE sales_data (
+    id INT,
+    date DATE,
+    category VARCHAR(255),
+    amount DECIMAL(10, 2)
+);
+
+3) Load data
+LOAD DATA LOCAL INFILE 'C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\sales_data.csv'
+INTO TABLE your_table_name
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(id, date, category, amount);
+
+4) To troubleshoot issue (Optional):
+
+Run the following SQL query to find out the directory that you're allowed to load files from:
+
+SHOW VARIABLES LIKE 'secure_file_priv';
+
+5) Server Side Configuration:
+
+Locate your MySQL server's configuration file, which is typically named my.ini. You can usually find it in the MySQL installation directory or the data directory "C:\ProgramData\MySQL\MySQL Server 8.0".
+
+Open the my.ini file with a text editor running as an administrator.
+
+Look for the [mysqld] section and add the following line if it's not already present:
+
+local_infile=1
+
+6) Restart MySQL
+
+net stop MySQL80
+net start MySQL80
+
+7) Before executing command on Command Prompt, make sure "MySQL is added to the PATH Environment Variable".
+
+8) When using the MySQL command-line client (run as administrator), you need to enable local data loading by starting the client with the --local-infile option set to 1. 
+
+mysql -u yourusername -p --local-infile=1
+
