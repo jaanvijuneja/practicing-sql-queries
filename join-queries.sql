@@ -150,12 +150,24 @@ books as b
 on a.author_name = b.author
 group by a.author_name;
 
--- Select all authors who have written more than 3 books. Use a subquery within a join to determine the number of books each author has written.
+-- Select all authors who have written more than 2 books.
 
-select a.author_name, count(b.title)
+select a.author_name
 from authors as a
 inner join 
 books as b
 on a.author_name = b.author
 group by a.author_name
 having count(b.title) > 2;
+
+-- to find books
+
+select title from books
+where author in 
+(select a.author_name
+from authors as a
+inner join 
+books as b
+on a.author_name = b.author
+group by a.author_name
+having count(b.title) > 2);
